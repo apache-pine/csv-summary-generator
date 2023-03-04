@@ -1,29 +1,20 @@
 # Overview
 
-<!--
-To-do:
-Talk about what you are trying to accomplish as a data scientist to further your learning.
-Provide a description of the software that you wrote to demonstrate the Java language.
-Describe your purpose for writing this software.
-Provide a YouTube demonstration. It should be a 4-5 minute demo of the software running and a walkthrough of the code. Focus should be on sharing what you learned about the language syntax.
--->
+As a data scientist, my goal is to continually learn and improve my skills in data analysis and visualization. I believe that developing proficiency in programming languages such as Java is essential to achieving this goal. I decided to do this project as a way to learn the Java language and immediately use it in an applicable way. I chose to write a program that would read in a data file and perform statistical calculations on the data, then write a summary of the calculated statistics to an output file in a user-friendly, readable format.
 
-[Software Demo Video](http://youtube.link.goes.here)
+Specifically, the program accepts an input file path from the user, a delimiter, and an output file path. The program expects a CSV file for the input and a Markdown file for the output. The program reads the input file and separates the columns with numeric values from the columns with string values. The program then calculates the minimum, maximum, mean, and sum of the numeric columns and writes the results to the output file. The program also alphabetizes the string columns and writes the top ten results to the output file.
+
+The purpose of this software is to provide a tool for data scientists to quickly and easily analyze large CSV files, including generating summary reports and statistical calculations. By creating this software, I have gained a deeper understanding of the Java language and object-oriented programming principles, as well as furthered my skills in data analysis and visualization.
+
+[Software Demo Video](https://youtu.be/OvCeimuO5N4)
 
 # Development Environment
 
-<!--
-To-do:
-Describe the tools that you used to develop the software
-Describe the programming language that you used and any libraries.
--->
+- VS Code 1.76.0
+- Java 19
+- openjdk 11.0.16.1 2022-08-12 LTS
 
 # Useful Websites
-
-<!--
-To-do:
-Make a list of websites that you found helpful in this project
--->
 
 - [JDK 19 Documentation](https://docs.oracle.com/en/java/javase/19/index.html)
 - [The Java Tutorials](https://docs.oracle.com/javase/tutorial/)
@@ -34,11 +25,10 @@ Make a list of websites that you found helpful in this project
 
 # Future Work
 
-<!--
-To-do:
-Make a list of things that you need to fix, improve, and add in the future.
--->
-
-- Item 1
-- Item 2
-- Item 3
+- Error Handling
+- Support for more data types and file types
+- More statistical calculations
+- More output formats
+- Better optimization for large data sets
+- Support for multiple delimiters
+- Count and list the unique values in each string column
