@@ -5,24 +5,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CSVReader {
-
-    private String fileName;
+    private String filePath;
     private String delimiter;
 
-    public CSVReader(String fileName, String delimiter) {
-        this.fileName = fileName;
+    public CSVReader(String filePath, String delimiter) {
+        this.filePath = filePath;
         this.delimiter = delimiter;
     }
 
     public List<String[]> read() throws IOException {
         List<String[]> data = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
+
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = br.readLine()) != null) {
-                String[] values = line.split(delimiter);
+                String[] values = line.split(delimiter + "(?=([^\"]*\"[^\"]*\")*[^\"]*$)");
+                for (int i = 0; i < values.length; i++) {
+                    values[i] = values[i].replaceAll("\"", "").trim();
+                }
                 data.add(values);
             }
         }
+
         return data;
     }
 }

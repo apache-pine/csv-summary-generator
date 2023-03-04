@@ -22,52 +22,54 @@ public class StatsCalculator {
             boolean isNumeric = true;
             boolean isString = true;
             double sum = 0;
-            double min = Double.MAX_VALUE;
-            double max = Double.MIN_VALUE;
+            double min = Double.POSITIVE_INFINITY;
+            double max = Double.NEGATIVE_INFINITY;
+            int count = 0;
 
             // Calculate the statistics for columns containing numeric values
-            for (int j = 1; j < column.size(); j++) { // start iterating from the second row
-                String value = column.get(j);
-                try {
-                    double number = Double.parseDouble(value);
-                    sum += number;
-                    if (number < min) {
-                        min = number;
+            for (String value : column) {
+                if (!value.equalsIgnoreCase("N/A") && !value.isEmpty()) {
+                    try {
+                        double number = Double.parseDouble(value.replace(",", ""));
+                        sum += number;
+                        if (number < min) {
+                            min = number;
+                        }
+                        if (number > max) {
+                            max = number;
+                        }
+                        count++;
+                    } catch (NumberFormatException e) {
+                        isNumeric = false;
+                        break;
                     }
-                    if (number > max) {
-                        max = number;
-                    }
-                } catch (NumberFormatException e) {
-                    isNumeric = false;
-                    break;
                 }
             }
 
             // Sort the columns containing string values
             if (!isNumeric) {
-                for (int j = 1; j < column.size(); j++) { // start iterating from the second row
-                    String value = column.get(j);
+                for (String value : column) {
                     try {
-                        Double.parseDouble(value);
+                        Double.parseDouble(value.replace(",", ""));
                         isString = false;
                         break;
                     } catch (NumberFormatException e) {
                     }
                 }
                 if (isString) {
-                    Collections.sort(column.subList(1, column.size()), String.CASE_INSENSITIVE_ORDER);
-                    if (column.size() > 11) {
-                        column = column.subList(0, 11);
+                    Collections.sort(column, String.CASE_INSENSITIVE_ORDER);
+                    if (column.size() > 10) {
+                        column = column.subList(0, 10);
                     }
                 }
             }
 
             // Add the statistics to the stats list
             if (isNumeric) {
-                double mean = sum / (column.size() - 1); // subtract 1 to exclude the header row
+                double mean = count > 0 ? sum / count : 0;
                 statsList.add(new ColumnStats(i, min, max, sum, mean, true, null));
             } else {
-                statsList.add(new ColumnStats(i, column.subList(1, column.size()), false)); // start from the second row
+                statsList.add(new ColumnStats(i, column, false));
             }
         }
 

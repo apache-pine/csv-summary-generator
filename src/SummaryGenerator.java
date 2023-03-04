@@ -10,22 +10,23 @@ public class SummaryGenerator {
         this.filePath = filePath;
     }
 
-    public void generateSummary(List<StatsCalculator.ColumnStats> statsList) throws IOException {
+    public void generateSummary(List<StatsCalculator.ColumnStats> statsList, String[] columnHeadings)
+            throws IOException {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             writer.write("# Summary Report\n\n");
 
             // Numeric statistics
             writer.write("## Numeric Statistics\n\n");
-            writer.write("| Column | Min | Max | Sum | Mean |\n");
-            writer.write("| --- | --- | --- | --- | --- |\n");
+            writer.write("| Column | Heading | Min | Max | Sum | Mean |\n");
+            writer.write("| --- | --- | --- | --- | --- | --- |\n");
             for (StatsCalculator.ColumnStats stats : statsList) {
                 if (stats.isNumeric()) {
                     String min = stats.getMinValue() == null ? "N/A" : Double.toString(stats.getMinValue());
                     String max = stats.getMaxValue() == null ? "N/A" : Double.toString(stats.getMaxValue());
                     String sum = stats.getSumValue() == null ? "N/A" : Double.toString(stats.getSumValue());
                     String mean = stats.getMeanValue() == null ? "N/A" : Double.toString(stats.getMeanValue());
-                    writer.write(String.format("| %d | %s | %s | %s | %s |\n",
-                            stats.getColumnIndex(), min, max, sum, mean));
+                    writer.write(String.format("| %d | %s | %s | %s | %s | %s |\n",
+                            stats.getColumnIndex(), columnHeadings[stats.getColumnIndex()], min, max, sum, mean));
                 }
             }
             writer.write("\n");
@@ -34,7 +35,8 @@ public class SummaryGenerator {
             writer.write("## String Statistics\n\n");
             for (StatsCalculator.ColumnStats stats : statsList) {
                 if (!stats.isNumeric()) {
-                    writer.write(String.format("### Column %d\n\n", stats.getColumnIndex()));
+                    writer.write(String.format("### Column %d - %s\n\n", stats.getColumnIndex(),
+                            columnHeadings[stats.getColumnIndex()]));
                     writer.write("| Top Values |\n");
                     writer.write("| --- |\n");
                     for (String value : stats.getSortedValues()) {
